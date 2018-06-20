@@ -19,7 +19,9 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.impl.conn.SchemeRegistryFactory;
 import org.apache.http.protocol.BasicHttpContext;
@@ -57,14 +59,17 @@ public class AppdRestProxy {
 			this.username = username;
 			this.password = password;
 			
+			System.setProperty("https.protocols", "TLSv1.2");
+			
 /*			@SuppressWarnings("deprecation")
 			PoolingClientConnectionManager cxMgr = new PoolingClientConnectionManager(
 					SchemeRegistryFactory.createDefault());
 			cxMgr.setMaxTotal(2);
 			cxMgr.setDefaultMaxPerRoute(2);
 
+			
 			this.client = new DefaultHttpClient(cxMgr);*/
-			this.client = new DefaultHttpClient();
+			this.client = HttpClients.createDefault();
 			this.context = new BasicHttpContext();
 			this.cookieStore = new BasicCookieStore();
 			this.context.setAttribute("http.cookie-store", this.cookieStore);
@@ -76,8 +81,7 @@ public class AppdRestProxy {
 				BASE_APPD_API_URL, new Object[] {
 						serverName, application, "Business%20Transaction%20Performance%7CBusiness%20Transactions%7CPLAB_MS_payment_search%7C%2FgetPaymentSearchResults%7CAverage%20Response%20Time%20%28ms%29" });
 		
-        HttpHost target = new HttpHost("genproxy.amdocs.com", 8080, "https");
-        HttpHost proxy = new HttpHost("genproxy.amdocs.com", 8080, "https");
+        HttpHost proxy = new HttpHost("genproxy.amdocs.com", 8080, "http");
 
         RequestConfig config = RequestConfig.custom()
                 .setProxy(proxy)
