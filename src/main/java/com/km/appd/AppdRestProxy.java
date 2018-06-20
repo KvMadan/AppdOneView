@@ -59,7 +59,7 @@ public class AppdRestProxy {
 			this.username = username;
 			this.password = password;
 			
-			System.setProperty("https.protocols", "TLSv1.2");
+			//System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 			
 /*			@SuppressWarnings("deprecation")
 			PoolingClientConnectionManager cxMgr = new PoolingClientConnectionManager(
